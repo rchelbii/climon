@@ -1,20 +1,43 @@
 from textual.app import App, ComposeResult
-from textual.widgets import Label, Button
+from textual.binding import Binding
+from textual.widgets import (
+        Label,
+        Button,
+        Header,
+        Footer,
+        Static
+)
 
 from pathlib import Path
 
 
 class Climon(App):
     PARENTDIR = Path(__file__).resolve().parent.parent
-    CSS_PATH = PARENTDIR / "static/theme.css" 
+    CSS_PATH = PARENTDIR / "static/grid.css" 
+
+    BINDINGS = [
+        Binding(key="q", action="quit", description="Quit the app"),
+        Binding(
+            key="question_mark",
+            action="help",
+            description="Show help screen",
+            key_display="?",
+        ),
+    ]
+
     def compose(self) -> ComposeResult:
         self.close_button = Button("close", id="close")
-        yield Label("Hello, World!", id="main-label")
-        yield self.close_button
+        yield Header(name="Climon", show_clock=True)
+        yield Static("Uno", classes="box")
+        yield Static("Uno", classes="box")
+        yield Static("Uno", classes="box")
+        yield Static("Uno", classes="box")
+        yield Static("Uno", classes="box")
+        yield Static("Uno", classes="box")
+        yield Footer()
 
     def on_mount(self) -> None:
-        self.screen.styles.background = "gray"
-        self.close_button.styles.background = "darkblue"
+        self.screen.styles.background = "ansi_bright_blue"
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         self.exit(event.button.id)
